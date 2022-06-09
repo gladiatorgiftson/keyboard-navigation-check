@@ -28,6 +28,33 @@
   color: #61dafb;
 }
 
+.App-container {
+  display: flex;
+ justify-self: center ;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.App-Item {
+  width: 100px;
+  border: black solid;
+  height: 20px;
+  margin: 10px;
+  justify-content: center;
+  text-align: center;
+
+}
+.Active{
+  width: 100px;
+  border: black solid;
+  height: 20px;
+  margin: 10px;
+  justify-content: center;
+  text-align: center;
+  background-color: grey;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +63,4 @@
     transform: rotate(360deg);
   }
 }
+
