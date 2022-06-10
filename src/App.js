@@ -2,8 +2,8 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  // const dummyData1 = ["a", "b", "c", "d"];
-  const dummyData1 = false
+  const dummyData1 = ["a", "b", "c", "d"];
+  // const dummyData1 = false;
   const dummyData2 = ["e", "f", "g", "h"];
   // const dummyData2 = false
   const dummyData3 = ["j", "k", "l", "m"];
@@ -11,15 +11,31 @@ function App() {
   const dummyData4 = ["n", "o", "p", "h"];
   // const dummyData4 = false
 
-  const [activeRow, setActiveRow] = useState("10");
-  const [activeRowIndex, setRowIndex] = useState()
+  const [activeRow, setActiveRow] = useState();
+  const [rowIndex, setRowIndex] = useState([]);
+  const [activeIndex, setActiveIndex] = useState();
+  const [activeRowIndex, setActiveRowIndex] = useState("");
+  const [indexValue, setIndexValue] = useState(0);
+  const [indexLength, setIndexLength] = useState(6);
   // cosnt [rowName, setName]
+  const handleDownPress = () => {
+    if (rowIndex.isEmpty) {
+      setRowIndex(["vehicle", "customers", "agreements", "reservation"]);
+      setActiveIndex(rowIndex[indexValue]);
+      setIndexValue(0);
+    }
+  };
 
-  const useKeyPress = (targetKey) => {
-    const [keyPressed, setKeyPressed] = useState(false);
+  const useComponetActive = () => {
+    useEffect(() => {
+      setActiveRowIndex(activeIndex + indexValue);
+    }, [activeIndex, indexValue]);
+  };
+
+  const useKeyPress = () => {
     function downHandler({ key }) {
       if (key === "ArrowDown") {
-        setActiveRow();
+        handleDownPress();
       }
     }
     // If released key is our target key then set to false
@@ -37,8 +53,7 @@ function App() {
         window.removeEventListener("keydown", downHandler);
         window.removeEventListener("keyup", upHandler);
       };
-    }, []); // Empty array ensures that effect is only run on mount and unmount
-    return keyPressed;
+    }, [rowIndex]); // Empty array ensures that effect is only run on mount and unmount
   };
 
   useKeyPress();
@@ -46,7 +61,7 @@ function App() {
     <div className="App-container">
       {dummyData1 &&
         dummyData1.map((item, index) => {
-          const activeRowIndex = "Vehicle" + index;
+          const activeRowIndex = "vehicle" + index;
           console.log(activeRowIndex);
           return (
             <div
@@ -59,12 +74,14 @@ function App() {
         })}
       {dummyData2 &&
         dummyData2.map((item, index) => {
-          const activeRowIndex = "Customers" + index;
-          console.log(activeRowIndex);
+          const activeRowIndex = "customers" + index;
           return (
             <div
               key={index}
               className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+              onClick={(e) => {
+                console.log(activeRowIndex);
+              }}
             >
               {item}
             </div>
@@ -73,11 +90,13 @@ function App() {
       {dummyData3 &&
         dummyData3.map((item, index) => {
           const activeRowIndex = "Agreements" + index;
-          console.log(activeRowIndex);
           return (
             <div
               key={index}
               className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+              onClick={(e) => {
+                console.log(activeRowIndex);
+              }}
             >
               {item}
             </div>
