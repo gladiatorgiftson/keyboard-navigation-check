@@ -36,14 +36,30 @@
   flex-direction: column;
 }
 
+.App-container-button {
+  display: flex;
+  justify-self: center ;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin: 10px;
+}
+
 .App-Item {
   width: 100px;
   border: black solid;
+  height: 30px;
+  margin: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.App-Button{
+  width: 100px;
   height: 20px;
   margin: 10px;
   justify-content: center;
   text-align: center;
-
 }
 .Active{
   width: 100px;
