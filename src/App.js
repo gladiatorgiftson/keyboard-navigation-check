@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const dummyData1 = ["a", "b", "c", "d"];
-  // const dummyData1 = false;
+  // const dummyData1 = false
   const dummyData2 = ["e", "f", "g", "h"];
   // const dummyData2 = false
   const dummyData3 = ["j", "k", "l", "m"];
@@ -11,39 +11,50 @@ function App() {
   const dummyData4 = ["n", "o", "p", "h"];
   // const dummyData4 = false
 
-  const [activeRow, setActiveRow] = useState();
-  const [rowIndex, setRowIndex] = useState([]);
-  const [activeIndex, setActiveIndex] = useState();
-  const [activeRowIndex, setActiveRowIndex] = useState("");
-  const [indexValue, setIndexValue] = useState(0);
-  const [indexLength, setIndexLength] = useState(6);
-  // cosnt [rowName, setName]
-  const handleDownPress = () => {
-    if (rowIndex.isEmpty) {
-      setRowIndex(["vehicle", "customers", "agreements", "reservation"]);
-      setActiveIndex(rowIndex[indexValue]);
-      setIndexValue(0);
-    }
-  };
+  const [activeRow, setActiveRow] = useState(10);
+  const [rowName, setRowName] = useState(dummyData1.length + 10);
+  const [keyValue, setKeyValue] = useState("");
 
-  const useComponetActive = () => {
-    useEffect(() => {
-      setActiveRowIndex(activeIndex + indexValue);
-    }, [activeIndex, indexValue]);
-  };
-
-  const useKeyPress = () => {
+  const useKeyPress = (targetKey) => {
+    const [keyPressed, setKeyPressed] = useState(false);
     function downHandler({ key }) {
       if (key === "ArrowDown") {
-        handleDownPress();
+        setKeyValue("Down");
+        setActiveRow((index) => (index = ++index));
       }
     }
     // If released key is our target key then set to false
     const upHandler = ({ key }) => {
       if (key === "ArrowUp") {
-        console.log("Arrow Up");
+        setKeyValue("Up");
+        setActiveRow((index) => (index = --index));
       }
     };
+
+    useEffect(() => {
+      if (activeRow === rowName && keyValue === "Down") {
+        setActiveRow((index) => (index = index - (index % 10) + 10));
+      }
+      if (activeRow === rowName && keyValue === "Up") {
+        setActiveRow((index) => (index = (index % 10) - index - 10));
+      }
+    }, [activeRow]);
+
+    useEffect(() => {
+      if (activeRow === rowName) {
+        if (rowName === dummyData1?.length + 10) {
+          setRowName(() => dummyData2?.length + 20);
+        }
+        if (rowName === dummyData2?.length + 20) {
+          setRowName(() => dummyData3?.length + 30);
+        }
+        if (rowName === dummyData3?.length + 30) {
+          setRowName(() => dummyData4?.length + 40);
+        }
+        console.log("the active row", activeRow);
+      }
+    }, [activeRow]);
+
     // Add event listeners
     useEffect(() => {
       window.addEventListener("keydown", downHandler);
@@ -53,20 +64,20 @@ function App() {
         window.removeEventListener("keydown", downHandler);
         window.removeEventListener("keyup", upHandler);
       };
-    }, [rowIndex]); // Empty array ensures that effect is only run on mount and unmount
+    }, []); // Empty array ensures that effect is only run on mount and unmount
+    return keyPressed;
   };
 
   useKeyPress();
   return (
     <div className="App-container">
+      {activeRow}
       {dummyData1 &&
         dummyData1.map((item, index) => {
-          const activeRowIndex = "vehicle" + index;
-          console.log(activeRowIndex);
           return (
             <div
-              key={index}
-              className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+              key={"1" + index}
+              className={"1" + index == activeRow ? "Active" : "App-Item"}
             >
               {item}
             </div>
@@ -74,14 +85,10 @@ function App() {
         })}
       {dummyData2 &&
         dummyData2.map((item, index) => {
-          const activeRowIndex = "customers" + index;
           return (
             <div
-              key={index}
-              className={activeRowIndex === activeRow ? "Active" : "App-Item"}
-              onClick={(e) => {
-                console.log(activeRowIndex);
-              }}
+              key={"2" + index}
+              className={"2" + index == activeRow ? "Active" : "App-Item"}
             >
               {item}
             </div>
@@ -89,14 +96,10 @@ function App() {
         })}
       {dummyData3 &&
         dummyData3.map((item, index) => {
-          const activeRowIndex = "Agreements" + index;
           return (
             <div
-              key={index}
-              className={activeRowIndex === activeRow ? "Active" : "App-Item"}
-              onClick={(e) => {
-                console.log(activeRowIndex);
-              }}
+              key={"3" + index}
+              className={"3" + index == activeRow ? "Active" : "App-Item"}
             >
               {item}
             </div>
@@ -104,12 +107,10 @@ function App() {
         })}
       {dummyData4 &&
         dummyData4.map((item, index) => {
-          const activeRowIndex = "Reservation" + index;
-          console.log(activeRowIndex);
           return (
             <div
-              key={index}
-              className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+              key={"4" + index}
+              className={"4" + index == activeRow ? "Active" : "App-Item"}
             >
               {item}
             </div>
