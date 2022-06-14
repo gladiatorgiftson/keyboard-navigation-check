@@ -64,8 +64,11 @@ function App() {
   };
 
   const enterHandler = (event) => {
-    if (event.key === "Enter") console.log("Enter Key Pressed");
+    if (event.key === "Enter") {
+      console.log(columNames[currentIndex].url);
+    }
   };
+
   const useKeyPress = () => {
     // Add event listeners
     useEffect(() => {
@@ -82,6 +85,11 @@ function App() {
     }, [secondaryFilter]);
   };
 
+  // useEffect(() => {
+  //   window.addEventListener("keyup", enterHandler);
+  //   return window.removeEventListener("keyup", enterHandler);
+  // }, [activeRow]);
+
   const removeFromFilter = (name) => {
     setSecondaryFilter(_.without(secondaryFilter, name));
   };
@@ -92,9 +100,7 @@ function App() {
 
   useKeyPress();
 
-  useEffect(() => {
-    console.log(columNames);
-  }, [secondaryFilter]);
+  useEffect(() => {}, [secondaryFilter]);
 
   return (
     <>
@@ -122,11 +128,18 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData1.map((item, index) => {
             const activeRowIndex = "dummyData1" + index;
-            columNames.push(activeRowIndex);
+            columNames.push({
+              activeRowIndex: activeRowIndex,
+              url: activeRowIndex,
+            });
             return (
               <div
                 key={index}
-                className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+                className={
+                  activeRowIndex === activeRow?.activeRowIndex
+                    ? "Active"
+                    : "App-Item"
+                }
               >
                 {item}
               </div>
@@ -136,12 +149,19 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData2.map((item, index) => {
             const activeRowIndex = "dummyData2" + index;
-            columNames.push(activeRowIndex);
+            columNames.push({
+              activeRowIndex: activeRowIndex,
+              url: activeRowIndex,
+            });
 
             return (
               <div
                 key={index}
-                className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+                className={
+                  activeRowIndex === activeRow?.activeRowIndex
+                    ? "Active"
+                    : "App-Item"
+                }
                 onClick={(e) => {
                   console.log(activeRowIndex);
                 }}
@@ -154,12 +174,18 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData3.map((item, index) => {
             const activeRowIndex = "dummyData3" + index;
-            columNames.push(activeRowIndex);
-
+            columNames.push({
+              activeRowIndex: activeRowIndex,
+              url: activeRowIndex,
+            });
             return (
               <div
                 key={index}
-                className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+                className={
+                  activeRowIndex === activeRow?.activeRowIndex
+                    ? "Active"
+                    : "App-Item"
+                }
                 onClick={(e) => {
                   console.log(activeRowIndex);
                 }}
@@ -172,11 +198,18 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData4.map((item, index) => {
             const activeRowIndex = "dummyData4" + index;
-            columNames.push(activeRowIndex);
+            columNames.push({
+              activeRowIndex: activeRowIndex,
+              url: activeRowIndex,
+            });
             return (
               <div
                 key={index}
-                className={activeRowIndex === activeRow ? "Active" : "App-Item"}
+                className={
+                  activeRowIndex === activeRow?.activeRowIndex
+                    ? "Active"
+                    : "App-Item"
+                }
               >
                 {item}
               </div>
