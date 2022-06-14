@@ -7,6 +7,7 @@ import "antd/dist/antd.css";
 function App() {
   const [secondaryFilter, setSecondaryFilter] = useState([]);
   const [activeRow, setActiveRow] = useState();
+
   let currentIndex;
   // const [columNames, setColumNames] = useState([]);
   const dummyData1 = ["a", "b", "c", "d"];
@@ -17,7 +18,10 @@ function App() {
   // const dummyData3 = false
   const dummyData4 = ["n", "o", "p", "h"];
   // const dummyData4 = false
+
+  // let columNames;
   const columNames = [];
+
   const filterButton = [
     { name: "dummyData1" },
     { name: "dummyData2" },
@@ -59,17 +63,23 @@ function App() {
     }
   };
 
+  const enterHandler = (event) => {
+    if (event.key === "Enter") console.log("Enter Key Pressed");
+  };
   const useKeyPress = () => {
     // Add event listeners
     useEffect(() => {
       window.addEventListener("keydown", downHandler);
       window.addEventListener("keyup", upHandler);
+      window.addEventListener("keyup", enterHandler);
+
       // Remove event listeners on cleanup
       return () => {
         window.removeEventListener("keydown", downHandler);
         window.removeEventListener("keyup", upHandler);
+        window.removeEventListener("keyup", enterHandler);
       };
-    }, []); // Empty array ensures that effect is only run on mount and unmount
+    }, [secondaryFilter]);
   };
 
   const removeFromFilter = (name) => {
@@ -82,16 +92,13 @@ function App() {
 
   useKeyPress();
 
-  useEffect(() => {}, [secondaryFilter]);
+  useEffect(() => {
+    console.log(columNames);
+  }, [secondaryFilter]);
 
   return (
     <>
-      <div
-        className="App-container-button"
-        onKeyDownCapture={(e) => {
-          console.log("WE");
-        }}
-      >
+      <div className="App-container-button">
         {filterButton.map((item) => (
           <div className="App-Button" key={item.name}>
             <Button
