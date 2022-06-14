@@ -7,6 +7,8 @@ import "antd/dist/antd.css";
 function App() {
   const [secondaryFilter, setSecondaryFilter] = useState([]);
   const [activeRow, setActiveRow] = useState();
+  let currentIndex;
+  // const [columNames, setColumNames] = useState([]);
   const dummyData1 = ["a", "b", "c", "d"];
   // const dummyData1 = false;
   const dummyData2 = ["e", "f", "g", "h"];
@@ -15,33 +17,51 @@ function App() {
   // const dummyData3 = false
   const dummyData4 = ["n", "o", "p", "h"];
   // const dummyData4 = false
+  const columNames = [];
   const filterButton = [
     { name: "dummyData1" },
     { name: "dummyData2" },
     { name: "dummyData3" },
     { name: "dummyData4" },
   ];
-  const handleDownPress = () => {};
 
-  const handleUpPress = () => {};
+  const handleDownPress = () => {
+    if (currentIndex === undefined || currentIndex === columNames.length - 1) {
+      currentIndex = 0;
+      setActiveRow(columNames[currentIndex]);
+    } else if (currentIndex === 0 || currentIndex) {
+      currentIndex = currentIndex + 1;
+      setActiveRow(columNames[currentIndex]);
+    }
+  };
+
+  const handleUpPress = () => {
+    if (currentIndex === 0) {
+      currentIndex = columNames.length - 1;
+      setActiveRow(columNames[currentIndex]);
+    } else if (currentIndex) {
+      currentIndex = currentIndex - 1;
+      setActiveRow(columNames[currentIndex]);
+    }
+  };
+
+  useEffect(() => {}, [activeRow, currentIndex]);
+
+  const downHandler = ({ key }) => {
+    if (key === "ArrowDown") {
+      handleDownPress();
+    }
+  };
+
+  const upHandler = ({ key }) => {
+    if (key === "ArrowUp") {
+      handleUpPress();
+    }
+  };
 
   const useKeyPress = () => {
-    function downHandler({ key }) {
-      if (key === "ArrowDown") {
-        handleDownPress();
-      }
-    }
-    // If released key is our target key then set to false
-    const upHandler = ({ key }) => {
-      if (key === "ArrowUp") {
-        handleUpPress();
-      }
-    };
-
     // Add event listeners
     useEffect(() => {
-      console.log(secondaryFilter);
-      console.log("Secondary controller executed");
       window.addEventListener("keydown", downHandler);
       window.addEventListener("keyup", upHandler);
       // Remove event listeners on cleanup
@@ -49,7 +69,7 @@ function App() {
         window.removeEventListener("keydown", downHandler);
         window.removeEventListener("keyup", upHandler);
       };
-    }, [secondaryFilter]); // Empty array ensures that effect is only run on mount and unmount
+    }, []); // Empty array ensures that effect is only run on mount and unmount
   };
 
   const removeFromFilter = (name) => {
@@ -62,14 +82,18 @@ function App() {
 
   useKeyPress();
 
-  useEffect(() => {
-    console.log("Second UseFilter");
-  }, [secondaryFilter]);
+  useEffect(() => {}, [secondaryFilter]);
+
   return (
     <>
-      <div className="App-container-button">
+      <div
+        className="App-container-button"
+        onKeyDownCapture={(e) => {
+          console.log("WE");
+        }}
+      >
         {filterButton.map((item) => (
-          <div className="App-Button">
+          <div className="App-Button" key={item.name}>
             <Button
               name={item.name}
               onClick={(e) => {
@@ -91,6 +115,7 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData1.map((item, index) => {
             const activeRowIndex = "dummyData1" + index;
+            columNames.push(activeRowIndex);
             return (
               <div
                 key={index}
@@ -104,6 +129,8 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData2.map((item, index) => {
             const activeRowIndex = "dummyData2" + index;
+            columNames.push(activeRowIndex);
+
             return (
               <div
                 key={index}
@@ -120,6 +147,8 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData3.map((item, index) => {
             const activeRowIndex = "dummyData3" + index;
+            columNames.push(activeRowIndex);
+
             return (
               <div
                 key={index}
@@ -136,6 +165,7 @@ function App() {
           secondaryFilter.length === 0) &&
           dummyData4.map((item, index) => {
             const activeRowIndex = "dummyData4" + index;
+            columNames.push(activeRowIndex);
             return (
               <div
                 key={index}

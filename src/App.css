@@ -63,8 +63,7 @@
 }
 .Active{
   width: 100px;
-  border: black solid;
-  height: 20px;
+  height: 30px;
   margin: 10px;
   justify-content: center;
   text-align: center;
